@@ -13,7 +13,7 @@ fn parse_elves(input: &str) -> Vec<Calories> {
 		let elf = if line.is_empty() {
 			Calories::default()
 		} else {
-			let calories = elves.pop().unwrap_or_else(Calories::default);
+			let calories = elves.pop().unwrap_or_default();
 			calories + line.parse::<Calories>().expect("Expected calory count")
 		};
 
@@ -23,7 +23,7 @@ fn parse_elves(input: &str) -> Vec<Calories> {
 	})
 }
 
-fn part1<'c>(elves: &'c Vec<Calories>) -> &'c Calories {
+fn part1(elves: &[Calories]) -> &Calories {
 	elves.iter().max().expect("Should not be an empty Vec")
 }
 
@@ -31,7 +31,7 @@ fn part2(mut elves: Vec<Calories>) -> Calories {
 	// Sort in reverse
 	elves.sort_unstable_by(|a, b| b.cmp(a));
 	// Fetch the top 3 elves and return the sum of their calories
-	elves.iter().take(3).map(|elf| *elf).sum()
+	elves.iter().take(3).copied().sum()
 }
 
 #[cfg(test)]
