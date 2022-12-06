@@ -1,12 +1,18 @@
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, time::Instant};
 
 fn main() {
 	let input = std::fs::read_to_string("inputs/day3.txt").expect("Input file should exist");
-	let part1 = part1(&input);
-	let part2 = part2(&input);
 
-	println!("Part 1: {part1}");
-	println!("Part 2: {part2}");
+	let start = Instant::now();
+	let part1 = part1(&input);
+	let part1_elapsed = start.elapsed().as_micros() as f32 / 1000f32;
+
+	let start = Instant::now();
+	let part2 = part2(&input);
+	let part2_elapsed = start.elapsed().as_micros() as f32 / 1000f32;
+
+	println!("Part 1: {part1} ({part1_elapsed})");
+	println!("Part 2: {part2} ({part2_elapsed})");
 }
 
 fn part1(input: &str) -> u32 {
