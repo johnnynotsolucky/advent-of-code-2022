@@ -152,9 +152,7 @@ fn part2(input: &str) -> usize {
 		let (direction, amount) = parse_move(line);
 
 		let step = Coord::from(direction);
-		// let head = rope.get_mut(0).unwrap();
 		for _ in 0..amount {
-			// move head
 			let head = rope.get_mut(0).unwrap();
 			*head = *head + step;
 
