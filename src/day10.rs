@@ -36,7 +36,7 @@ fn part1(input: &str) -> isize {
 			for cycle in 0..cycles {
 				cs += 1;
 
-				if (cs == 20 || (cs - 20) % 40 == 0) && cs <= 220 {
+				if (cs + 20) % 40 == 0 && cs <= 220 {
 					s += cs * x;
 				}
 
