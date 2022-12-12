@@ -22,6 +22,7 @@ cargo run --release --bin day8
 cargo run --release --bin day9
 cargo run --release --bin day10
 cargo run --release --bin day11
+cargo run --release --bin day12
 ```
 
 ## Rough Timings - Apple M1
@@ -41,3 +42,4 @@ Zero effort has been expended to attempt to speed these up.
 | [Day 9](https://adventofcode.com/2022/day/9)     | ` 0.576 ms` | ` 0.454 ms`  |
 | [Day 10](https://adventofcode.com/2022/day/10)   | ` 0.012 ms` | ` 0.015 ms`  |
 | [Day 11](https://adventofcode.com/2022/day/11)   | ` 0.064 ms` | ` 15.785 ms` |
+| [Day 12](https://adventofcode.com/2022/day/12)   | ` 5.278 ms` | ` 4.170 ms`  |
