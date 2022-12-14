@@ -36,49 +36,46 @@ fn parse_int(val: &[u8]) -> IResult<&[u8], usize> {
 	map_opt(digit1, atoi::atoi)(val)
 }
 
-fn read_scan(input: &str) -> (usize, HashSet<(usize, usize)>) {
-	let scan = input
-		.lines()
-		.flat_map(|line| {
-			parse_row(line.as_bytes()).unwrap().1[..]
-				.windows(2)
-				.flat_map(|window| {
-					let [from, to]: &[_; 2] = window.try_into().unwrap();
+fn scan_cave(input: &str) -> (usize, HashSet<(usize, usize)>) {
+	let mut lowest = 0;
+	let mut cave = HashSet::new();
 
-					if from.0 != to.0 {
-						let min = from.0.min(to.0);
-						let max = from.0.max(to.0);
-						Vec::from_iter((min..max + 1).map(|x| (x, to.1)))
-					} else {
-						let min = from.1.min(to.1);
-						let max = from.1.max(to.1);
-						Vec::from_iter((min..max + 1).map(|y| (to.0, y)))
-					}
-				})
-				.collect::<Vec<_>>()
-		})
-		.collect::<HashSet<_>>();
+	for line in input.lines() {
+		for window in parse_row(line.as_bytes()).unwrap().1[..].windows(2) {
+			let [from, to]: &[_; 2] = window.try_into().unwrap();
 
-	let lowest = *scan.iter().map(|(_, y)| y).max().unwrap();
+			lowest = lowest.max(from.1.max(to.1));
 
-	(lowest, scan)
+			if from.0 != to.0 {
+				let min = from.0.min(to.0);
+				let max = from.0.max(to.0);
+				cave.extend((min..max + 1).map(|x| (x, to.1)))
+			} else {
+				let min = from.1.min(to.1);
+				let max = from.1.max(to.1);
+				cave.extend((min..max + 1).map(|y| (to.0, y)))
+			}
+		}
+	}
+
+	(lowest, cave)
 }
 
 fn flood_cave(
-	scan: &mut HashSet<(usize, usize)>,
+	cave: &mut HashSet<(usize, usize)>,
 	source: (usize, usize),
 	target: usize,
-	op: impl Fn() -> bool,
+	break_on_target: bool,
 ) -> usize {
 	std::iter::repeat(())
 		.take_while(|_| {
 			let mut curr_pos = source;
 			'sand: loop {
 				if curr_pos.1 == target {
-					if op() {
-						return false;
-					} else {
+					if break_on_target {
 						break;
+					} else {
+						return false;
 					}
 				}
 
@@ -89,7 +86,7 @@ fn flood_cave(
 				];
 
 				for direction in directions {
-					if scan.get(&direction).is_none() {
+					if cave.get(&direction).is_none() {
 						curr_pos = direction;
 						continue 'sand;
 					}
@@ -102,7 +99,7 @@ fn flood_cave(
 				return false;
 			}
 
-			scan.insert(curr_pos);
+			cave.insert(curr_pos);
 
 			true
 		})
@@ -111,16 +108,16 @@ fn flood_cave(
 
 fn part1(input: &str) -> usize {
 	let source = (500usize, 0usize);
-	let (lowest, mut scan) = read_scan(input);
+	let (lowest, mut cave) = scan_cave(input);
 
-	flood_cave(&mut scan, source, lowest, || true)
+	flood_cave(&mut cave, source, lowest, false)
 }
 
 fn part2(input: &str) -> usize {
 	let source = (500usize, 0usize);
-	let (lowest, mut scan) = read_scan(input);
+	let (lowest, mut cave) = scan_cave(input);
 
-	flood_cave(&mut scan, source, lowest + 1, || false) + 1
+	flood_cave(&mut cave, source, lowest + 1, true) + 1
 }
 
 #[cfg(test)]

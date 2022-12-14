@@ -11,20 +11,7 @@ cargo test
 ## Run the solution for a day (both parts)
 
 ```
-cargo run --release --bin day1
-cargo run --release --bin day2
-cargo run --release --bin day3
-cargo run --release --bin day4
-cargo run --release --bin day5
-cargo run --release --bin day6
-cargo run --release --bin day7
-cargo run --release --bin day8
-cargo run --release --bin day9
-cargo run --release --bin day10
-cargo run --release --bin day11
-cargo run --release --bin day12
-cargo run --release --bin day13
-cargo run --release --bin day14
+cargo run --release --bin <day>
 ```
 
 ## Rough Timings - Apple M1
@@ -46,4 +33,4 @@ Zero effort has been expended to attempt to speed these up.
 | [Day 11](https://adventofcode.com/2022/day/11)   | ` 0.064 ms` | ` 15.785 ms`  |
 | [Day 12](https://adventofcode.com/2022/day/12)   | ` 5.278 ms` | ` 4.170 ms`   |
 | [Day 13](https://adventofcode.com/2022/day/13)   | ` 0.597 ms` | ` 0.648 ms`   |
-| [Day 14](https://adventofcode.com/2022/day/14)   | ` 4.519 ms` | ` 107.869 ms` |
+| [Day 14](https://adventofcode.com/2022/day/14)   | ` 4.198 ms` | ` 107.823 ms` |
