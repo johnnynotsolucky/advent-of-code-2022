@@ -59,16 +59,12 @@ fn read_scan(input: &str) -> (usize, HashSet<(usize, usize)>) {
 		})
 		.collect::<HashSet<_>>();
 
-	let lowest = {
-		let mut sorted = scan.iter().map(|(_, y)| y).collect::<Vec<_>>();
-		sorted.sort_unstable();
-		**sorted.last().unwrap()
-	};
+	let lowest = *scan.iter().map(|(_, y)| y).max().unwrap();
 
 	(lowest, scan)
 }
 
-fn drop_sand(
+fn flood_cave(
 	scan: &mut HashSet<(usize, usize)>,
 	source: (usize, usize),
 	target: usize,
@@ -117,14 +113,14 @@ fn part1(input: &str) -> usize {
 	let source = (500usize, 0usize);
 	let (lowest, mut scan) = read_scan(input);
 
-	drop_sand(&mut scan, source, lowest, || true)
+	flood_cave(&mut scan, source, lowest, || true)
 }
 
 fn part2(input: &str) -> usize {
 	let source = (500usize, 0usize);
 	let (lowest, mut scan) = read_scan(input);
 
-	drop_sand(&mut scan, source, lowest + 1, || false) + 1
+	flood_cave(&mut scan, source, lowest + 1, || false) + 1
 }
 
 #[cfg(test)]
