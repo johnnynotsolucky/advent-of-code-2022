@@ -83,63 +83,23 @@ fn part1(input: &str) -> usize {
 		.sum::<usize>()
 }
 
-fn quicksort(list: &mut [Item], low: usize, high: usize) {
-	if low < high {
-		let p = partition(list, low, high);
-		quicksort(list, low, p);
-		quicksort(list, p + 1, high);
-	}
-}
-
-fn partition(list: &mut [Item], low: usize, high: usize) -> usize {
-	let mut i = low;
-
-	for j in low..high - 1 {
-		let ordering = {
-			let item = list.get(j).unwrap();
-			let pivot = list.get(high - 1).unwrap();
-
-			item.cmp(pivot)
-		};
-
-		if let Ordering::Less = ordering {
-			list.swap(i, j);
-			i += 1;
-		}
-	}
-
-	list.swap(i, high - 1);
-
-	i
-}
-
 fn part2(input: &str) -> usize {
 	let dividers = vec![
 		Item::List(vec![Item::List(vec![Item::Integer(2)])]),
 		Item::List(vec![Item::List(vec![Item::Integer(6)])]),
 	];
 
-	let mut list = input
+	let list = input
 		.split('\n')
 		.filter(|line| !line.is_empty())
 		.map(|signal| parse_item(signal.as_bytes()).unwrap().1)
+		.filter(|item| item < &dividers[1])
 		.collect::<Vec<_>>();
 
-	list.extend(dividers.clone());
+	let pos_a = list.iter().filter(|item| *item < &dividers[0]).count() + 1;
+	let pos_b = list.len() + 2;
 
-	let high = list.len();
-	quicksort(&mut list, 0, high);
-
-	list.iter()
-		.enumerate()
-		.filter_map(|(idx, signal)| {
-			if dividers.contains(signal) {
-				Some(idx + 1)
-			} else {
-				None
-			}
-		})
-		.product::<usize>()
+	pos_a * pos_b
 }
 
 #[cfg(test)]
